@@ -1,14 +1,14 @@
-/*Ðåàëèçóéòå ñòðóêòóðó äàííûõ òèïà “ìíîæåñòâî ñòðîê” íà îñíîâå äèíàìè÷åñêîé
-õåø-òàáëèöû ñ îòêðûòîé àäðåñàöèåé. Õðàíèìûå ñòðîêè íåïóñòûå è ñîñòîÿò èç ñòðî÷íûõ
-ëàòèíñêèõ áóêâ.
-Õåø-ôóíêöèÿ ñòðîêè äîëæíà áûòü ðåàëèçîâàíà ñ ïîìîùüþ âû÷èñëåíèÿ çíà÷åíèÿ
-ìíîãî÷ëåíà ìåòîäîì Ãîðíåðà.
-Íà÷àëüíûé ðàçìåð òàáëèöû äîëæåí áûòü ðàâíûì 8-ìè. Ïåðåõåøèðîâàíèå âûïîëíÿéòå
-ïðè äîáàâëåíèè ýëåìåíòîâ â ñëó÷àå, êîãäà êîýôôèöèåíò çàïîëíåíèÿ òàáëèöû äîñòèãàåò
+/*Реализуйте структуру данных типа “множество строк” на основе динамической
+хеш-таблицы с открытой адресацией. Хранимые строки непустые и состоят из строчных
+латинских букв.
+Хеш-функция строки должна быть реализована с помощью вычисления значения
+многочлена методом Горнера.
+Начальный размер таблицы должен быть равным 8-ми. Перехеширование выполняйте
+при добавлении элементов в случае, когда коэффициент заполнения таблицы достигает
 3/4.
-Ñòðóêòóðà äàííûõ äîëæíà ïîääåðæèâàòü îïåðàöèè äîáàâëåíèÿ ñòðîêè â ìíîæåñòâî,
-óäàëåíèÿ ñòðîêè èç ìíîæåñòâà è ïðîâåðêè ïðèíàäëåæíîñòè äàííîé ñòðîêè ìíîæåñòâó.
-1_2. Äëÿ ðàçðåøåíèÿ êîëëèçèé èñïîëüçóéòå äâîéíîå õåøèðîâàíèå.*/
+Структура данных должна поддерживать операции добавления строки в множество,
+удаления строки из множества и проверки принадлежности данной строки множеству.
+1_2. Для разрешения коллизий используйте двойное хеширование.*/
 
 #include <iostream>
 #include <string>
@@ -22,7 +22,7 @@
 using namespace std;
 
 template<class T>
-int hash1(const T& keys_array, int size) // õåø-ôóíêöèÿ 1
+int hash1(const T& keys_array, int size) // хеш-функция 1
 {
 	int hash = 0;
 	for (int i = keys_array.size(); i >= 0; i--) 
@@ -33,7 +33,7 @@ int hash1(const T& keys_array, int size) // õåø-ôóíêöèÿ 1
 }
 
 template<class T>
-int hash2(const T& keys_array, int size) // õåø-ôóíêöèÿ 2
+int hash2(const T& keys_array, int size) // хеш-функция 2
 {
 	int hash = 0;
 	for (int i = keys_array.size(); i >= 0; i--) 
@@ -44,7 +44,7 @@ int hash2(const T& keys_array, int size) // õåø-ôóíêöèÿ 2
 }
 
 template<class T>
-class Hash_table_node //ýëåìåíò òàáëèöû 
+class Hash_table_node //элемент таблицы 
 {
 private:
 	T key; 
@@ -80,32 +80,32 @@ public:
 };
 
 template<class T>
-class Hash_table //õåø-òàáëèöà
+class Hash_table //хеш-таблица
 {
 private:
 	vector<Hash_table_node<T>*> buffer; 
 	int buffer_size; 
-	int size; //ðåàëüíîå êîë-âî ýëåìåíòîâ â òàáëèöå
+	int size; //реальное кол-во элементов в таблице
 		   
-	void rehash() //ïåðåõåøèðîâàíèå
+	void rehash() //перехеширование
 	{
 		int new_buffer_size = buffer_size * 2;
 		vector<Hash_table_node<T>*> new_buffer(new_buffer_size, NULL);
 		for (int i = 0; i < buffer_size; i++) 
 		{
-			if (buffer[i] != NULL && !buffer[i]->if_is_deleted()) //åñëè ýëåìåíò ñóùåñòâóåò â ñòàðîé òàáëèöå
+			if (buffer[i] != NULL && !buffer[i]->if_is_deleted()) //если элемент существует в старой таблице
 			{
 				int h1 = hash1(buffer[i]->get_key(), new_buffer_size);
 				int	h2 = hash2(buffer[i]->get_key(), new_buffer_size);
 				int k = 0;
-				while (new_buffer[h1] != NULL && k < new_buffer_size) //èùåì ñâîáîäíóþ ÿ÷åéêó íîâîé òàáëèöû
+				while (new_buffer[h1] != NULL && k < new_buffer_size) //ищем свободную ячейку новой таблицы
 				{
 					h1 = (h1 + h2) % new_buffer_size;
 					k++;
 				}
 				new_buffer[h1] = buffer[i];
 			}
-			else //åñëè ÿ÷åéêà ñòàðîé òàáëèöû ïóñòà
+			else //если ячейка старой таблицы пуста
 			{
 				delete buffer[i];
 			}
@@ -128,7 +128,7 @@ public:
 
 	bool add(const T& key_value) 
 	{
-		if (((double)size / (double)buffer_size) >= REHASH_INDEX) //ïðîâåðêà íà íåîáõîäèìîñòü ïåðåõåøèðîâàíèÿ
+		if (((double)size / (double)buffer_size) >= REHASH_INDEX) //проверка на необходимость перехеширования
 		{
 			rehash();
 		}
@@ -139,11 +139,11 @@ public:
 
 		while (buffer[h1] != NULL && i < buffer_size) 
 		{
-			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //åñëè òàêîé êëþ÷ óæå åñòü â òàáëèöå
+			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //если такой ключ уже есть в таблице
 			{
 				return false;
 			}
-			if (buffer[h1]->if_is_deleted() && first_deleted_elem < 0) // ñîõðàíÿåì íîìåð ïåðâîãî óäàë¸ííîãî ýëåìåíòà
+			if (buffer[h1]->if_is_deleted() && first_deleted_elem < 0) // сохраняем номер первого удалённого элемента
 			{
 				first_deleted_elem = h1;
 			}
@@ -151,11 +151,11 @@ public:
 			i++;
 		}
 
-		if (first_deleted_elem < 0) //âñòàâëÿåì íîâûé êëþ÷
+		if (first_deleted_elem < 0) //вставляем новый ключ
 		{
 			buffer[h1] = new Hash_table_node<T>(key_value);
 		}
-		else //âñòàâëÿåì íà ìåñòî ïåðâîãî óäàë¸ííîãî
+		else //вставляем на место первого удалённого
 		{
 			buffer[first_deleted_elem]->set_key(key_value);
 			buffer[first_deleted_elem]->set_not_deleted();
@@ -171,7 +171,7 @@ public:
 		int i = 0;
 		while (buffer[h1] != NULL && i < buffer_size) 
 		{
-			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //åñëè íàøëè ýëåìåíò
+			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //если нашли элемент
 			{
 				buffer[h1]->set_deleted();
 				size--;
@@ -180,7 +180,7 @@ public:
 			h1 = (h1 + h2) % buffer_size;
 			i++;
 		}
-		return false; //íå íàøëè òàêîãî ýëåìåíòà
+		return false; //не нашли такого элемента
 	}
 
 	bool has(const T& key_value) const 
@@ -190,14 +190,14 @@ public:
 		int i = 0;
 		while (buffer[h1] != NULL && i < buffer_size) 
 		{
-			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //åñëè íàøëè ýëåìåíò
+			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //если нашли элемент
 			{
 				return true;
 			}
 			h1 = (h1 + h2) % buffer_size;
 			i++;
 		}
-		return false; //íå íàøëè òàêîãî ýëåìåíòà
+		return false; //не нашли такого элемента
 	}
 };
 
