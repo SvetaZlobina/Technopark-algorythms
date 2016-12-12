@@ -1,14 +1,14 @@
-/*Реализуйте структуру данных типа “множество строк” на основе динамической
-хеш-таблицы с открытой адресацией. Хранимые строки непустые и состоят из строчных
-латинских букв.
-Хеш-функция строки должна быть реализована с помощью вычисления значения
-многочлена методом Горнера.
-Начальный размер таблицы должен быть равным 8-ми. Перехеширование выполняйте
-при добавлении элементов в случае, когда коэффициент заполнения таблицы достигает
+/*ГђГҐГ Г«ГЁГ§ГіГ©ГІГҐ Г±ГІГ°ГіГЄГІГіГ°Гі Г¤Г Г­Г­Г»Гµ ГІГЁГЇГ  вЂњГ¬Г­Г®Г¦ГҐГ±ГІГўГ® Г±ГІГ°Г®ГЄвЂќ Г­Г  Г®Г±Г­Г®ГўГҐ Г¤ГЁГ­Г Г¬ГЁГ·ГҐГ±ГЄГ®Г©
+ГµГҐГё-ГІГ ГЎГ«ГЁГ¶Г» Г± Г®ГІГЄГ°Г»ГІГ®Г© Г Г¤Г°ГҐГ±Г Г¶ГЁГҐГ©. Г•Г°Г Г­ГЁГ¬Г»ГҐ Г±ГІГ°Г®ГЄГЁ Г­ГҐГЇГіГ±ГІГ»ГҐ ГЁ Г±Г®Г±ГІГ®ГїГІ ГЁГ§ Г±ГІГ°Г®Г·Г­Г»Гµ
+Г«Г ГІГЁГ­Г±ГЄГЁГµ ГЎГіГЄГў.
+Г•ГҐГё-ГґГіГ­ГЄГ¶ГЁГї Г±ГІГ°Г®ГЄГЁ Г¤Г®Г«Г¦Г­Г  ГЎГ»ГІГј Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г  Г± ГЇГ®Г¬Г®Г№ГјГѕ ГўГ»Г·ГЁГ±Г«ГҐГ­ГЁГї Г§Г­Г Г·ГҐГ­ГЁГї
+Г¬Г­Г®ГЈГ®Г·Г«ГҐГ­Г  Г¬ГҐГІГ®Г¤Г®Г¬ ГѓГ®Г°Г­ГҐГ°Г .
+ГЌГ Г·Г Г«ГјГ­Г»Г© Г°Г Г§Г¬ГҐГ° ГІГ ГЎГ«ГЁГ¶Г» Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Г°Г ГўГ­Г»Г¬ 8-Г¬ГЁ. ГЏГҐГ°ГҐГµГҐГёГЁГ°Г®ГўГ Г­ГЁГҐ ГўГ»ГЇГ®Г«Г­ГїГ©ГІГҐ
+ГЇГ°ГЁ Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГЁ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў Г±Г«ГіГ·Г ГҐ, ГЄГ®ГЈГ¤Г  ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІ Г§Г ГЇГ®Г«Г­ГҐГ­ГЁГї ГІГ ГЎГ«ГЁГ¶Г» Г¤Г®Г±ГІГЁГЈГ ГҐГІ
 3/4.
-Структура данных должна поддерживать операции добавления строки в множество,
-удаления строки из множества и проверки принадлежности данной строки множеству.
-1_2. Для разрешения коллизий используйте двойное хеширование.*/
+Г‘ГІГ°ГіГЄГІГіГ°Г  Г¤Г Г­Г­Г»Гµ Г¤Г®Г«Г¦Г­Г  ГЇГ®Г¤Г¤ГҐГ°Г¦ГЁГўГ ГІГј Г®ГЇГҐГ°Г Г¶ГЁГЁ Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГї Г±ГІГ°Г®ГЄГЁ Гў Г¬Г­Г®Г¦ГҐГ±ГІГўГ®,
+ГіГ¤Г Г«ГҐГ­ГЁГї Г±ГІГ°Г®ГЄГЁ ГЁГ§ Г¬Г­Г®Г¦ГҐГ±ГІГўГ  ГЁ ГЇГ°Г®ГўГҐГ°ГЄГЁ ГЇГ°ГЁГ­Г Г¤Г«ГҐГ¦Г­Г®Г±ГІГЁ Г¤Г Г­Г­Г®Г© Г±ГІГ°Г®ГЄГЁ Г¬Г­Г®Г¦ГҐГ±ГІГўГі.
+1_2. Г„Г«Гї Г°Г Г§Г°ГҐГёГҐГ­ГЁГї ГЄГ®Г«Г«ГЁГ§ГЁГ© ГЁГ±ГЇГ®Г«ГјГ§ГіГ©ГІГҐ Г¤ГўГ®Г©Г­Г®ГҐ ГµГҐГёГЁГ°Г®ГўГ Г­ГЁГҐ.*/
 
 #include <iostream>
 #include <string>
@@ -22,7 +22,7 @@
 using namespace std;
 
 template<class T>
-int hash1(const T& keys_array, int size) // хеш-функция 1
+int hash1(const T& keys_array, int size) // ГµГҐГё-ГґГіГ­ГЄГ¶ГЁГї 1
 {
 	int hash = 0;
 	for (int i = keys_array.size(); i >= 0; i--) 
@@ -33,7 +33,7 @@ int hash1(const T& keys_array, int size) // хеш-функция 1
 }
 
 template<class T>
-int hash2(const T& keys_array, int size) // хеш-функция 2
+int hash2(const T& keys_array, int size) // ГµГҐГё-ГґГіГ­ГЄГ¶ГЁГї 2
 {
 	int hash = 0;
 	for (int i = keys_array.size(); i >= 0; i--) 
@@ -44,7 +44,7 @@ int hash2(const T& keys_array, int size) // хеш-функция 2
 }
 
 template<class T>
-class Hash_table_node //элемент таблицы 
+class Hash_table_node //ГЅГ«ГҐГ¬ГҐГ­ГІ ГІГ ГЎГ«ГЁГ¶Г» 
 {
 private:
 	T key; 
@@ -80,32 +80,32 @@ public:
 };
 
 template<class T>
-class Hash_table //хеш-таблица
+class Hash_table //ГµГҐГё-ГІГ ГЎГ«ГЁГ¶Г 
 {
 private:
 	vector<Hash_table_node<T>*> buffer; 
 	int buffer_size; 
-	int size; //реальное кол-во элементов в таблице
+	int size; //Г°ГҐГ Г«ГјГ­Г®ГҐ ГЄГ®Г«-ГўГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў ГІГ ГЎГ«ГЁГ¶ГҐ
 		   
-	void rehash() //перехеширование
+	void rehash() //ГЇГҐГ°ГҐГµГҐГёГЁГ°Г®ГўГ Г­ГЁГҐ
 	{
 		int new_buffer_size = buffer_size * 2;
 		vector<Hash_table_node<T>*> new_buffer(new_buffer_size, NULL);
 		for (int i = 0; i < buffer_size; i++) 
 		{
-			if (buffer[i] != NULL && !buffer[i]->if_is_deleted()) //если элемент существует в старой таблице
+			if (buffer[i] != NULL && !buffer[i]->if_is_deleted()) //ГҐГ±Г«ГЁ ГЅГ«ГҐГ¬ГҐГ­ГІ Г±ГіГ№ГҐГ±ГІГўГіГҐГІ Гў Г±ГІГ Г°Г®Г© ГІГ ГЎГ«ГЁГ¶ГҐ
 			{
 				int h1 = hash1(buffer[i]->get_key(), new_buffer_size);
 				int	h2 = hash2(buffer[i]->get_key(), new_buffer_size);
 				int k = 0;
-				while (new_buffer[h1] != NULL && k < new_buffer_size) //ищем свободную ячейку новой таблицы
+				while (new_buffer[h1] != NULL && k < new_buffer_size) //ГЁГ№ГҐГ¬ Г±ГўГ®ГЎГ®Г¤Г­ГіГѕ ГїГ·ГҐГ©ГЄГі Г­Г®ГўГ®Г© ГІГ ГЎГ«ГЁГ¶Г»
 				{
 					h1 = (h1 + h2) % new_buffer_size;
 					k++;
 				}
 				new_buffer[h1] = buffer[i];
 			}
-			else //если ячейка старой таблицы пуста
+			else //ГҐГ±Г«ГЁ ГїГ·ГҐГ©ГЄГ  Г±ГІГ Г°Г®Г© ГІГ ГЎГ«ГЁГ¶Г» ГЇГіГ±ГІГ 
 			{
 				delete buffer[i];
 			}
@@ -128,7 +128,7 @@ public:
 
 	bool add(const T& key_value) 
 	{
-		if (((double)size / (double)buffer_size) >= REHASH_INDEX) //проверка на необходимость перехеширования
+		if (((double)size / (double)buffer_size) >= REHASH_INDEX) //ГЇГ°Г®ГўГҐГ°ГЄГ  Г­Г  Г­ГҐГ®ГЎГµГ®Г¤ГЁГ¬Г®Г±ГІГј ГЇГҐГ°ГҐГµГҐГёГЁГ°Г®ГўГ Г­ГЁГї
 		{
 			rehash();
 		}
@@ -139,11 +139,11 @@ public:
 
 		while (buffer[h1] != NULL && i < buffer_size) 
 		{
-			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //если такой ключ уже есть в таблице
+			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //ГҐГ±Г«ГЁ ГІГ ГЄГ®Г© ГЄГ«ГѕГ· ГіГ¦ГҐ ГҐГ±ГІГј Гў ГІГ ГЎГ«ГЁГ¶ГҐ
 			{
 				return false;
 			}
-			if (buffer[h1]->if_is_deleted() && first_deleted_elem < 0) // сохраняем номер первого удалённого элемента
+			if (buffer[h1]->if_is_deleted() && first_deleted_elem < 0) // Г±Г®ГµГ°Г Г­ГїГҐГ¬ Г­Г®Г¬ГҐГ° ГЇГҐГ°ГўГ®ГЈГ® ГіГ¤Г Г«ВёГ­Г­Г®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ 
 			{
 				first_deleted_elem = h1;
 			}
@@ -151,11 +151,11 @@ public:
 			i++;
 		}
 
-		if (first_deleted_elem < 0) //вставляем новый ключ
+		if (first_deleted_elem < 0) //ГўГ±ГІГ ГўГ«ГїГҐГ¬ Г­Г®ГўГ»Г© ГЄГ«ГѕГ·
 		{
 			buffer[h1] = new Hash_table_node<T>(key_value);
 		}
-		else //вставляем на место первого удалённого
+		else //ГўГ±ГІГ ГўГ«ГїГҐГ¬ Г­Г  Г¬ГҐГ±ГІГ® ГЇГҐГ°ГўГ®ГЈГ® ГіГ¤Г Г«ВёГ­Г­Г®ГЈГ®
 		{
 			buffer[first_deleted_elem]->set_key(key_value);
 			buffer[first_deleted_elem]->set_not_deleted();
@@ -171,7 +171,7 @@ public:
 		int i = 0;
 		while (buffer[h1] != NULL && i < buffer_size) 
 		{
-			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //если нашли элемент
+			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ ГЅГ«ГҐГ¬ГҐГ­ГІ
 			{
 				buffer[h1]->set_deleted();
 				size--;
@@ -180,7 +180,7 @@ public:
 			h1 = (h1 + h2) % buffer_size;
 			i++;
 		}
-		return false; //не нашли такого элемента
+		return false; //Г­ГҐ Г­Г ГёГ«ГЁ ГІГ ГЄГ®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ 
 	}
 
 	bool has(const T& key_value) const 
@@ -190,14 +190,14 @@ public:
 		int i = 0;
 		while (buffer[h1] != NULL && i < buffer_size) 
 		{
-			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //если нашли элемент
+			if (buffer[h1]->get_key() == key_value && !buffer[h1]->if_is_deleted()) //ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ ГЅГ«ГҐГ¬ГҐГ­ГІ
 			{
 				return true;
 			}
 			h1 = (h1 + h2) % buffer_size;
 			i++;
 		}
-		return false; //не нашли такого элемента
+		return false; //Г­ГҐ Г­Г ГёГ«ГЁ ГІГ ГЄГ®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ 
 	}
 };
 
